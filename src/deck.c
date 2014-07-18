@@ -2,6 +2,10 @@
 #include "cards.h"
 #include "deck.h"
 
+#include <stdlib.h>
+#include <stdio.h>
+
+
 /**
  * a deck is an array based stack of cards (or i guess a linked list would work)
  * it contains at least one pack of cards (0..51), but typically for a real game there will be more
@@ -17,9 +21,9 @@
 deck* get_deck(int n_packs)
 {
   int i;
-  deck *d = NULL;
+  deck *d;
   if( (d = malloc(sizeof(deck))) == NULL){
-    perror("malloc deck failed"); exit(2);
+  perror("malloc deck failed"); exit(2);
   }
   
   
@@ -34,11 +38,11 @@ deck* get_deck(int n_packs)
 
   /** fill the deck in a totally un shuffled order */
   for(i = 0; i < d->n_cards; i++){
-    d->cards[i] = (i % NSUITS*NTYPES);
+   d->cards[i] = (i % (NSUITS*NTYPES));
   }
 
   /* now shuffle it */
-  shuffle_deck(d);
+  //shuffle_deck(d);
   
   return(d);  
 }
@@ -73,9 +77,9 @@ void reset_deck(deck *d)
 void shuffle_deck(deck *d)
 {
   int i, j;
-  int nshuffle = d->n_cards - d->top_card;
+  int nshuffle = n_cards_remaining(d);
   int temp;
-  for(i = d->n_cards - 1; i--; i > d->top_card){
+   for(i = d->n_cards - 1; i > d->top_card; i--){
     j = random() % (nshuffle-i) + d->top_card; /* top_card < j < i */
     /* swappo */
     temp = d->cards[i];
@@ -102,14 +106,20 @@ int draw_card(deck *d)
   }
 }
 
+int n_cards_remaining(deck *d)
+{
+return (d ->n_cards - d->top_card);
+}
 
+
+/* prints the deck from the current top card */
 void print_deck(deck *d)
 {
   int i;
   char buffer[4];
-  for(i = 0; i < d->n_cards; i++){
-    card_to_str_short(i, buffer);
-    printf("%d %s\n", i, buffer_short);
+  for(i = d->top_card; i < d->n_cards; i++){
+    card_to_str_short(d->cards[i], buffer);
+    printf("%d %s\n", i, buffer);
   }
 }  
   
