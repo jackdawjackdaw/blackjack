@@ -95,6 +95,8 @@ char type_to_char(int type)
   switch(type){
   case 0:
     return('A');
+  case 9:
+    return('T'); /* teee for ten */
   case 10:
     return('J');
   case 11:
