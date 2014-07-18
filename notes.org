@@ -1,0 +1,40 @@
+* blackjack for insight
+** challenge statement
+   Insight Data Engineering Fellows Program - Coding Challenge
+
+   We'd like you to implement a text-based Blackjack program in one of the following programming languages:
+   Java, Clojure, Scala, C, C++, Python, or Ruby. There should be one player and one dealer. The dealer should
+   hit until his hand value is 17 or greater. You should implement the basic actions of hitting and
+   standing. Implementing the more advanced actions such as splitting is optional. The player should start
+   with 100 chips and must bet at least 1 chip each hand.
+
+   Any additional game play features are optional, but welcome.
+*** requirements
+    - be blackjack
+    - 1 player, 1 dealer
+    - dealer hits up to 17 (or bust)
+    - at least: hiting / standing actions
+    - (optional) splitting
+    - start with 100 chips, have to bet at least 1 chip per hand
+    - text based 
+** blackjack core rules
+** design 
+*** cards
+    - a card is an int on 0..51. 
+    - pick an ordering of suits S1,S2,S3,S4
+    - 0 -> A S1, 1 -> A S2 etc
+    - then: 
+      suit(int card) { card % NSUITS }
+      type(int card) { card / NSUITS } 
+    - use an enum for suits and card-types?
+      
+      |        0 |     1 |      2 |      3 |
+      | Diamonds | Clubs | Hearts | Spades |
+      
+    - need card -> human readable description (2char and long form)
+    - need card -> game_value (this is fussy, since Ace is high / low) 
+    
+      |   0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |  9 |   10 |    11 |   12 |
+      | ace | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | jack | queen | king |
+
+*** deck
