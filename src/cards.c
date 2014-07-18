@@ -9,7 +9,9 @@
  * 
  * helpful functions for dealing with cards 
  * we can represent a card as an int 0..51 (in a standard deck).
- * or more generally 0..(NSUITS*NTYPES)-1, 
+ * or more generally 0..(NSUITS*NTYPES)-1,
+ * unsigned short ints would be more memory efficient (buuuutt...)
+ * 
  * 
  * After picking an ordering of suits S1, S2, S3, S4 then
  *
@@ -24,13 +26,21 @@
  * 
  * if aces are wild then we have to be careful with mapping type to an actual score used to
  * determine the outcome of a hand
+ * 
+ * the output of 'test-cards' lists all the cards from 0..NSUITS*NTYPES which is neat 
  */
 
-#DEFINE NSUITS 4
-#DEFINE NTYPES 13
+int get_suit( int card)
+{
+  assert(card >= 0 && card < NSUITS*NTYPES);
+  return(card % NSUITS);
+}
 
-int get_suit( int card)  return(card % NSUITS);
-int get_type( int card)  return(card / NSUITS);
+int get_type( int card)
+{
+  assert(card >= 0 && card < NSUITS*NTYPES);  
+  return(card / NSUITS);
+}
 
 char suit_to_char(int suit)
 {
@@ -54,11 +64,13 @@ char suit_to_char(int suit)
 
 /** 
  * buffer should be allocated to at least 9 chars in size, (diamonds has 8 plus '\0')
+ * \fix should probably return a string instead, this is a very annoying interface
  */ 
 void suit_to_str(int suit, char* buffer)
 {
   assert(suit >= 0 && suit < 4);
-  assert(sizeof(buffer)/sizeof(buffer[0]) >= 9);
+  /* fprintf(stderr, "buff size: %lu\n",  sizeof(buffer)/sizeof(char)); */
+  /* assert(sizeof(buffer)/sizeof(buffer[0]) >= 9); */
   
   switch(suit){
   case 0:
@@ -94,15 +106,17 @@ char type_to_char(int type)
   case 12:
     return('K');
   default:
-    return((char)(((int)'0')+type));
+    return((char)(((int)'0')+type+1));
   }
 }  
 
 
+/**
+ * \fix this should return a string 
+ */
 void type_to_str(int type, char* buffer)
 {
   assert(type >= 0 && type < 13);
-  assert(sizeof(buffer)/sizeof(buffer[0]) >= 6); /* need space for queen + '\0' */
 
   switch(type){
   case 0:
@@ -118,7 +132,7 @@ void type_to_str(int type, char* buffer)
     sprintf(buffer, "King");
     break;
   default: 
-    sprintf(buffer, "%d", type);
+    sprintf(buffer, "%d", type+1);
     break;
   }
   
