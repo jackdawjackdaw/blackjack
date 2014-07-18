@@ -79,12 +79,14 @@ void shuffle_deck(deck *d)
   int i, j;
   int nshuffle = n_cards_remaining(d);
   int temp;
-   for(i = d->n_cards - 1; i > d->top_card; i--){
-    j = random() % (nshuffle-i) + d->top_card; /* top_card < j < i */
+  for(i = d->n_cards - 1; i > d->top_card; i--){
+    j = ((int)random()) % (nshuffle-i) + d->top_card;
+
+    //printf("%d %d %d\n", i, j, ((int)random()) % (nshuffle-i)); 
     /* swappo */
     temp = d->cards[i];
     d->cards[i] = d->cards[j];
-    d->cards[i] = temp;
+    d->cards[j] = temp;
   }
 }
 
