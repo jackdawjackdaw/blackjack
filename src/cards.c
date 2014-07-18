@@ -61,16 +61,12 @@ char suit_to_char(int suit)
   }
 }
 
-
 /** 
- * buffer should be allocated to at least 9 chars in size, (diamonds has 8 plus '\0')
- * \fix should probably return a string instead, this is a very annoying interface
+ * returns an allocated string, don't forget to free
  */ 
 void suit_to_str(int suit, char* buffer)
 {
   assert(suit >= 0 && suit < 4);
-  /* fprintf(stderr, "buff size: %lu\n",  sizeof(buffer)/sizeof(char)); */
-  /* assert(sizeof(buffer)/sizeof(buffer[0]) >= 9); */
   
   switch(suit){
   case 0:
@@ -136,5 +132,39 @@ void type_to_str(int type, char* buffer)
     break;
   }
   
+}
+
+
+/** 
+ * renders a card to a space separated string like 
+ * Ace Clubs, or 2 Spades 
+ */
+void card_to_str_long(int card, char* buffer)
+{
+  assert(card >= 0 && card < NSUITS*NTYPES);
+
+  char type_buffer[16];
+  char suit_buffer[16];
+  type_to_str(get_type(card), type_buffer);
+  suit_to_str(get_suit(card), suit_buffer);  
+
+  sprintf(buffer, "%s %s", type_buffer, suit_buffer);
+}
+
+/**
+ * renders a card to a pair of characters
+ * Queen Diamonds -> QD 
+ * 2 Spades -> 2S
+ * it'd be nice to use the actual suit symbols but then we'd need 
+ * to print wide chars
+ */
+void card_to_str_short(int card, char* buffer)
+{
+  assert(card >= 0 && card < NSUITS*NTYPES);
+
+  char type = type_to_char(get_type(card));
+  char suit = suit_to_char(get_suit(card));
+
+  sprintf(buffer, "%c%c", type, suit);
 }
 

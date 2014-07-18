@@ -73,22 +73,22 @@ START_TEST (test_type_string)
 }
 END_TEST
 
-START_TEST (test_type_dummy)
+START_TEST (test_card_dummy)
 {
   int i;
-  char type_buffer[32];
-  char suit_buffer[32];
+  char buffer_long[64];
+  char buffer_short[4];  
   for(i = 0; i < NSUITS*NTYPES; i++){
-    type_to_str(get_type(i), type_buffer);
-    suit_to_str(get_suit(i), suit_buffer);
-    printf("%d %s %s\n", i, type_buffer, suit_buffer);
+    card_to_str_long(i, buffer_long);
+    card_to_str_short(i, buffer_short);    
+    printf("%d (%s) (%s)\n", i, buffer_long, buffer_short);
   }
 } 
 END_TEST     
 
 
 Suite* card_suite (void) {
-        Suite *suite = suite_create("Core");
+        Suite *suite = suite_create("Cards");
         TCase *tcase = tcase_create("BasicCardFns");
 
         /* add tests here */
@@ -98,11 +98,12 @@ Suite* card_suite (void) {
         tcase_add_test(tcase, test_type_short);
         tcase_add_test(tcase, test_type_string);
 
-        tcase_add_test(tcase, test_type_dummy);
+        tcase_add_test(tcase, test_card_dummy);
         
         suite_add_tcase(suite, tcase);
         return suite;
 }
+
 
 int main (int argc, char *argv[]) {
   /* fairly generic test runner */
