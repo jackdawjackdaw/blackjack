@@ -66,7 +66,8 @@ void reset_deck(deck *d)
  * shuffle the cards in the deck from top_card -> n_cards
  * fisher yaaaaaaates
  *
- * \fix replace the rng with a better one
+ * \note should probably to seed the rng 
+ * \fix replace the rng?
  *  
  * To shuffle an array a of n elements (indices 0..n-1):
  * for i from n − 1 downto 1 do
