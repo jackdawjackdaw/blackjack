@@ -26,6 +26,7 @@ void free_hand(hand* h);
 void reset_hand(hand* h);
 
 int score_hand(hand* h); 
+void score_helper(hand *h, int *score_list_ptr, int hand_index);
 
 void print_hand(hand* h);
 

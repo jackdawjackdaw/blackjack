@@ -70,21 +70,57 @@ int score_hand(hand *h)
 {
   int *score_list;
   int n_aces = h->n_aces;
+  int n_slots = (n_aces == 0) ? 1 : (2 <<(n_aces-1));
+  int i;
 
-  if(n_aces > 0){
-    score_list = malloc_checked(sizeof(int) * (2<<(n_aces-1)));
-  } else {
-    score_list = malloc_checked(sizeof(int)); /* no need to recurse here */
+  score_list = malloc_checked(sizeof(int)*n_slots);
+
+  for(i = 0; i < n_slots; i++){
+    score_list[i] = 0;
   }
+  
+  score_helper(h, score_list, 0);
 
-  /*...*/
+  /* want to either pick the highest non bust score,
+   * or the lowest low score */
   
   free(score_list);
   return(h->score);
 }
 
+/**
+ * iterate through the hand list, if the card is a regular card just increment 
+ * the score, otherwise branch and fill out a new list element when we come to an ace */
+void score_helper(hand *h, int *score_list_ptr, int hand_index)
+{
+  int card = h->cards[hand_index];
+  int val = get_value(card);
+  int temp_score;
+  int temp_index;
+  if(val > 0){
+    *score_list_ptr += val;
+    if(hand_index < h->n_cards){
+      score_helper(h, score_list_ptr, hand_index++);
+    }
+  } else { /* it's an ace */
+    temp_score = *score_list_ptr; /* save the old score */
+    temp_index = hand_index; /* save the old index */
 
-int score_helper(hand* h, int current_score)
+    *score_list_ptr += 1; /* ace low */
+    if(hand_index < h->n_cards){
+      /* running this branch will modify hand index*/
+      score_helper(h, score_list_ptr, hand_index++);
+    }
+    
+    score_list_ptr++; /* next slot in the list */
+    *score_list_ptr += 11 + temp_score; /* add the old score and the high value */
+    if(temp_index < h->n_cards){
+      score_helper(h, score_list_ptr, temp_index++);
+    }
+
+  }
+}
+  
 
 
 /**
