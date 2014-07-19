@@ -7,6 +7,8 @@
 int get_suit( int card);
 int get_type( int card);
 
+int get_value( int card);
+
 char suit_to_char(int suit);
 void suit_to_str(int suit, char* buffer);
 char type_to_char(int type);

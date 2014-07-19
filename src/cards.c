@@ -42,6 +42,23 @@ int get_type( int card)
   return(card / NSUITS);
 }
 
+int get_value( int card)
+{
+  int type = get_type(card);
+  switch(type){
+  case 0:
+    return(-1); /* aces are special */
+  case 10: /* jack queen king all drop through to the return (10) */
+  case 11:
+  case 12:
+    return(10);
+  default: 
+    return(type + 1); /* return the face value */
+    break;
+  }
+  
+}  
+
 char suit_to_char(int suit)
 {
   assert(suit >= 0 && suit < 4);
