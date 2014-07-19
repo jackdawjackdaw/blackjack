@@ -1,6 +1,7 @@
 
 #include "cards.h"
 #include "deck.h"
+#include "useful.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -22,18 +23,14 @@ deck* get_deck(int n_packs)
 {
   int i;
   deck *d;
-  if( (d = malloc(sizeof(deck))) == NULL){
-  perror("malloc deck failed"); exit(2);
-  }
-  
+
+  d = malloc_checked(sizeof(deck));
   
   d->n_cards = NSUITS*NTYPES*n_packs;
   d->cards = NULL;
-  
-  if( (d->cards = malloc(sizeof(int)*d->n_cards)) == NULL){
-      perror("malloc cards failed"); exit(2);
-  }
 
+  d->cards = malloc_checked(sizeof(int)*d->n_cards);
+                    
   d->top_card = 0; /* top is the first one */
 
   /** fill the deck in a totally un shuffled order */

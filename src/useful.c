@@ -6,7 +6,7 @@
 
 /** checks for null
  */
-void *MallocChecked(size_t size)
+void *malloc_checked(size_t size)
 {
 	void *r = malloc(size);
 	if( r == NULL)
