@@ -62,7 +62,7 @@ void print_hand(hand* h)
  * updates h->score and also returns the score
  * 
  * we can get the value of the cards in the hand from cards.c:get_value(card)
- * however if there is an ace then we should branch and try both values
+ * however if there is an ace then we should recurse and account for both values
  * 
  * for a hand containing n_aces the maximum number of different scores is 2^(n_aces) 
  */
@@ -74,9 +74,17 @@ int score_hand(hand *h)
   if(n_aces > 0){
     score_list = malloc_checked(sizeof(int) * (2<<(n_aces-1)));
   } else {
-    score_list = malloc_checked(sizeof(int)); /* no list */
+    score_list = malloc_checked(sizeof(int)); /* no need to recurse here */
   }
+
+  /*...*/
+  
+  free(score_list);
+  return(h->score);
 }
+
+
+int score_helper(hand* h, int current_score)
 
 
 /**
