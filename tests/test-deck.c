@@ -5,6 +5,7 @@
 #include <math.h>
 
 #include "deck.h"
+#include "useful.h"
 
 
 START_TEST (test_deck_basic)
@@ -53,13 +54,15 @@ START_TEST (test_deck_shuffle)
   int i, idx;
   int nshuffles = 2<<12;
   int perm;
-  int expected;
+  double expected = 0.0;
+  double observed = 0.0;
+  double pearson = 0.0;
   
   /* lets make a special deck of only 4 cards */
   d -> n_cards = 3;
   ck_assert_int_eq(n_cards_remaining(d), 3);
 
-  srandom(1); /* set the seed */
+  srandom(get_seed_noblock()); /* set the seed using the non blocking interface*/
   
   printf("# unshuffled tiny deck\n");
   print_deck(d);
@@ -104,13 +107,27 @@ START_TEST (test_deck_shuffle)
     permCounts[idx]++;
   }
 
-  expected = nshuffles / 6;
-
+  /* pearsons chi-squared test 
+   * if each permutation is equally likely then
+   * the expected frequency is simply N_obs / N_cells 
+   * 
+   * the pearson stat can then be compared with a chi-square (6) dist
+   * qchisq(0.99, 5) = 15.086
+   * qchisq(0.95, 5) = 11.070
+   *
+   * \fix, well i'm confused this isn't looking right
+   */
+   
+  expected = 1 / 6.0; 
   
   for(i = 0; i < 6; i++){
-    /* (obs-expected)^2 / expected */
-    printf("%d %d %lf\n", i, permCounts[i], pow((permCounts[i] - expected),2.0)/(expected) );
+    observed = (double)permCounts[i] / nshuffles;
+    pearson += (pow(observed - expected, 2.0) / expected);
+    printf("%d %d %lf %lf\n", i, permCounts[i], observed, expected);
   }
+
+  printf("pearson: %lf\n", pearson);
+  
   
   free_deck(d);
 }

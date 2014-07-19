@@ -66,14 +66,17 @@ void reset_deck(deck *d)
  * shuffle the cards in the deck from top_card -> n_cards
  * fisher yaaaaaaates
  *
- * \note should probably to seed the rng 
+ * \note should probably to seed the rng
+ * \note pearson's chi-squared tested for bias in test-deck.c 
  * \fix replace the rng?
+ *  
  *  
  * To shuffle an array a of n elements (indices 0..n-1):
  * for i from n − 1 downto 1 do
- *      j ← random integer with 0 ≤ j ≤ i
+ *      j <- random integer with 0 <= j  <= i
  *     exchange a[j] and a[i]
  *
+ * 
  */
 void shuffle_deck(deck *d)
 {
