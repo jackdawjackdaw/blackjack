@@ -16,8 +16,8 @@
  */
 
 /** 
- * allocates and returns a shuffled deck of cards, the argument sets how many packs (0..51) of cards there are
- * in the deck.
+ * allocates and returns an un-shuffled deck of cards, the argument sets how many packs (0..51) of cards there
+ * are in the deck.
  */ 
 deck* get_deck(int n_packs)
 {
@@ -27,7 +27,6 @@ deck* get_deck(int n_packs)
   d = malloc_checked(sizeof(deck));
   
   d->n_cards = NSUITS*NTYPES*n_packs;
-  d->cards = NULL;
 
   d->cards = malloc_checked(sizeof(int)*d->n_cards);
                     
@@ -38,9 +37,6 @@ deck* get_deck(int n_packs)
    d->cards[i] = (i % (NSUITS*NTYPES));
   }
 
-  /* now shuffle it */
-  //shuffle_deck(d);
-  
   return(d);  
 }
 
@@ -51,6 +47,7 @@ void free_deck(deck* d)
 }
 
 /* sets top_card back to zero and then shuffles the whole deck
+ * this preserves the number of cards in the deck.
  */ 
 void reset_deck(deck *d)
 {
@@ -105,6 +102,7 @@ int draw_card(deck *d)
     return(retval);
   } else {
     /* maybe log this? */
+    fprintf(stderr, "# trying to draw a card from an empty deck\n");
     return -1;
   }
 }

@@ -40,9 +40,17 @@ START_TEST (test_deck_basic)
   ck_assert_int_eq(d->n_cards, 52*3);
   ck_assert_int_eq(d->top_card, 0); 
   free_deck(d);
+
+  d = get_deck(1);
+  d->n_cards = 1;
+  card = draw_card(d);
+  ck_assert_msg( (card = draw_card(d)) == -1,
+                "Was expecting an empty deck, but got %d", card);
   
 } 
 END_TEST
+
+
 
 /* this only works for a 3 card deck */
 
@@ -52,11 +60,12 @@ START_TEST (test_deck_shuffle)
 {
   deck *d = get_deck(1);
   int i, idx;
-  int nshuffles = 2<<12;
+  int nshuffles = 2<<16;
   int perm;
   double expected = 0.0;
   double observed = 0.0;
   double pearson = 0.0;
+  const double critical = 11.07;
   
   /* lets make a special deck of only 4 cards */
   d -> n_cards = 3;
@@ -118,17 +127,21 @@ START_TEST (test_deck_shuffle)
    * \fix, well i'm confused this isn't looking right
    */
    
-  expected = 1 / 6.0; 
+  expected = nshuffles / 6.0; 
   
   for(i = 0; i < 6; i++){
-    observed = (double)permCounts[i] / nshuffles;
+    observed = (double)permCounts[i] ;
     pearson += (pow(observed - expected, 2.0) / expected);
-    printf("%d %d %lf %lf\n", i, permCounts[i], observed, expected);
+    printf("%d %d %lf %lf\n", i, permCounts[i], expected, pearson);
   }
 
   printf("pearson: %lf\n", pearson);
-  
-  
+
+  ck_assert_msg( pearson < critical ,
+                 "potential bias, expected pearson stat less than critical %lf value, got %lf",
+                 critical,
+                 pearson);
+
   free_deck(d);
 }
 END_TEST

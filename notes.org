@@ -38,3 +38,63 @@
       | ace | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | jack | queen | king |
 
 *** deck
+** rules
+At a casino blackjack table, the dealer faces five to seven playing positions from behind a semicircular
+table. Between one and eight standard 52-card decks are shuffled together. At the beginning of each round, up
+to three players place their bets in the "betting box" at each position in play. The player whose bet is at
+the front of the betting box is deemed to have control over the position, and the dealer will consult the
+controlling player for playing decisions regarding the hand; the other players of that box are said to "play
+behind". Any player is usually allowed to control or bet in as many boxes as desired at a single table, but it
+is prohibited for an individual to play on more than one table at a time or to place multiple bets within a
+single box. In many U.S. casinos, however, players are limited to playing two or three positions at a table
+and often only one person is allowed to bet on each position.
+
+The dealer deals cards from his/her left (the position on the dealer's far left is often referred to as "first
+base") to her far right ("third base"). Each box is dealt an initial hand of two cards visible to the people
+playing on it, and often to any other players. The dealer's hand receives its first card face up, and in "hole
+card" games immediately receives its second card face down (the hole card), which the dealer peeks at but does
+not reveal unless it makes the dealer's hand a blackjack. Hole card games are sometimes played on tables with
+a small mirror or electronic sensor that is used to peek securely at the hole card. In European casinos, "no
+hole card" games are prevalent; the dealer's second card is neither drawn nor consulted until the players have
+all played their hands.
+
+Cards are dealt either from one or two handheld decks, from a dealer's shoe, or from a shuffling
+machine. Single cards are dealt to each wagered-on position clockwise from the dealer's left, followed by a
+single card to the dealer, followed by an additional card to each of the positions in play. The players'
+initial cards may be dealt face up or face down (more common in single-deck games).
+
+The players' object is to win money by creating card totals that turn out to be higher than the dealer's hand
+but do not exceed 21 ("busting"/"breaking"), or alternatively by allowing the dealer to take additional cards
+until he/she busts. On their turn, players must choose whether to "hit" (take a card), "stand" (end their
+turn), "double" (double wager, take a single card and finish), "split" (if the two cards have the same value,
+separate them to make two hands) or "surrender" (give up a half-bet and retire from the game). Number cards
+count as their natural value; the jack, queen, and king (also known as "face cards" or "pictures") count as
+10; aces are valued as either 1 or 11 according to the player's choice. If the hand value exceeds 21 points,
+it busts, and all bets on it are immediately forfeit. After all boxes have finished playing, the dealer's hand
+is resolved by drawing cards until the hand busts or achieves a value of 17 or higher (a dealer total of 17
+including an ace, or "soft 17", must be drawn to in some games and must stand in others). The dealer never
+doubles, splits, or surrenders. If the dealer busts, all remaining player hands win. If the dealer does not
+bust, each remaining bet wins if its hand is higher than the dealer's, and loses if it is lower. In the case
+of a tied score, known as "push" or "standoff", bets are normally returned without adjustment; however, a
+blackjack beats any hand that is not a blackjack, even one with a value of 21. An outcome of blackjack
+vs. blackjack results in a push. Wins are paid out at 1:1, or equal to the wager, except for winning
+blackjacks, which are traditionally paid at 3:2 (meaning the player receives three dollars for every two bet),
+or one-and-a-half times the wager. Many casinos today pay blackjacks at less than 3:2 at some tables.[4]
+
+Blackjack games almost always provide a side bet called insurance, which may be played when dealer's upcard is
+an ace. Additional side bets, such as "Dealer Match" which pays when the player's cards match the dealer's up
+card, are sometimes available.
+** player actions
+*** hit
+    - take another card
+*** stand/stick/stay
+    - take no more cards
+*** double down
+    - increase initial bet by 100%
+    - commit to stand after being dealt one more card
+*** split
+    - IFF this is the first decision of a hand
+    - if the two cards have the same value -> split to two hands
+    - have to supply a second bet (equal to the first) for the second hand
+    - house rules depend on if the cards have to be the same rank (i.e jacks) or only the same value 
+*** surrender

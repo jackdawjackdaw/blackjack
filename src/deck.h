@@ -10,14 +10,10 @@ typedef struct deck{
 
 deck* get_deck(int n_packs);
 void free_deck(deck* d);
-
 void reset_deck(deck *d);
-
 void shuffle_deck(deck* d);
 int draw_card(deck* d);
-
 int n_cards_remaining(deck *d);
-
 void print_deck(deck* d);
 
 #endif
