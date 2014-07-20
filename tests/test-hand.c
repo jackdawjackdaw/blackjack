@@ -67,15 +67,15 @@ START_TEST (test_hand_score)
   /* one card, an ace */
   reset_hand(h);
   add_card_to_hand(h, 1);
-  print_hand(h);
   score_hand(h);
-
+  print_hand(h);
+  
   /* two cards, an ace and the test_card */
   reset_hand(h);
   add_card_to_hand(h,1);
   add_card_to_hand(h, test_card);
-  print_hand(h);
   score_hand(h);
+  print_hand(h);
 
   /* two cards, test_card then ace */
   reset_hand(h);
@@ -104,6 +104,7 @@ START_TEST (test_hand_score)
   reset_hand(h);
   add_card_to_hand(h,1);
   add_card_to_hand(h,11);    
+  add_card_to_hand(h,2);
   add_card_to_hand(h,2);
   add_card_to_hand(h,12);  
   score_hand(h);

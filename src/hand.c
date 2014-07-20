@@ -91,9 +91,8 @@ int score_hand(hand *h)
   
   score_list = malloc_checked(sizeof(int)*n_slots);
 
-  for(i = 0; i < n_slots; i++){
+  for(i = 0; i < n_slots; i++)
     score_list[i] = 0;
-  }
   
   score_helper(h, n_slots, score_list);
 
@@ -114,12 +113,6 @@ int score_hand(hand *h)
 
     /* this one is always the lowest */
     h->low_score = score_list[n_slots-1];
-    /* for(i = 0; i < n_slots; i++){ */
-    /*   if(score_list[i] < h->low_score){ */
-    /*     h->low_score = score_list[i]; */
-    /*   } */
-    /* } */
-
   }
   
   free(score_list);
