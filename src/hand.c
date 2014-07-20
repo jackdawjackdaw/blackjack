@@ -73,6 +73,7 @@ void print_hand(hand* h)
  * 
  * for a hand containing n_aces the maximum number of different high-low choices is bounded from above by
  * 2^(n_aces)
+ * could do better, there's many equivalent configs that we're wasting time by examining 
  *
  * we could set a high and low score?
  */
@@ -83,7 +84,7 @@ int score_hand(hand *h)
   int n_slots = (n_aces == 0) ? 1 : (2 <<(n_aces-1));
   int i;
 
-  printf("n_slots %d\n", n_slots);
+  //printf("n_slots %d\n", n_slots);
   
   if(h->n_cards == 0){
     return(0);
@@ -104,12 +105,13 @@ int score_hand(hand *h)
     h->low_score = h->score;
   } else {
     for(i = 0; i < n_slots; i++){
-      printf("%d ", score_list[i]);
+      //printf("%d ", score_list[i]);
       /* sets score to the highest non bust value  */
       if(score_list[i] > h->score && score_list[i] <= 21)
         h->score = score_list[i];
+      /* what if theres isnt' a non bust value? */
     }
-    printf("\n");
+    //printf("\n");
 
     /* this one is always the lowest */
     h->low_score = score_list[n_slots-1];

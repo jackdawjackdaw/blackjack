@@ -55,12 +55,14 @@ START_TEST (test_hand_score)
   /* one card, easy score */
   add_card_to_hand(h, test_card);
   score_hand(h);
+  print_hand(h);
   expected = get_value(test_card);
   ck_assert_msg(h->score == expected, "expected score %d, got %d", expected, h->score);
 
   /* two cards, no aces */
   add_card_to_hand(h, test_card+8);
   score_hand(h);
+  print_hand(h);  
   expected += get_value(test_card+8);
   ck_assert_msg(h->score == expected, "expected score %d, got %d", expected, h->score);
 
@@ -69,6 +71,9 @@ START_TEST (test_hand_score)
   add_card_to_hand(h, 1);
   score_hand(h);
   print_hand(h);
+  ck_assert_int_eq(h->score, 11);
+  ck_assert_int_eq(h->low_score, 1);
+    
   
   /* two cards, an ace and the test_card */
   reset_hand(h);
@@ -76,6 +81,9 @@ START_TEST (test_hand_score)
   add_card_to_hand(h, test_card);
   score_hand(h);
   print_hand(h);
+  ck_assert_int_eq(h->score, 20);
+  ck_assert_int_eq(h->low_score, 10);
+  
 
   /* two cards, test_card then ace */
   reset_hand(h);
@@ -83,13 +91,19 @@ START_TEST (test_hand_score)
   add_card_to_hand(h,1);
   score_hand(h);
   print_hand(h);
-
+  /* scores should be the same as before, we just changed the ordering of the cards */
+  ck_assert_int_eq(h->score, 20);
+  ck_assert_int_eq(h->low_score, 10);
+  
   reset_hand(h);
   add_card_to_hand(h, test_card);
   add_card_to_hand(h,1);
   add_card_to_hand(h, test_card-8);
   score_hand(h);
   print_hand(h);
+
+  ck_assert_int_eq(h->score, 17);
+  ck_assert_int_eq(h->low_score, 17);
 
   /* two aces */
   /* score list should be: 1+1, 1+11, 11+11 */
@@ -101,18 +115,35 @@ START_TEST (test_hand_score)
   score_hand(h);
   print_hand(h);
 
+  ck_assert_int_eq(h->score, 16);
+  ck_assert_int_eq(h->low_score, 6);
+
+  
+
+  
   reset_hand(h);
   add_card_to_hand(h,1);
   add_card_to_hand(h,11);    
   add_card_to_hand(h,2);
-  add_card_to_hand(h,2);
+  add_card_to_hand(h,3);
   add_card_to_hand(h,12);  
   score_hand(h);
   print_hand(h);
 
+  ck_assert_int_eq(h->score, 20);
+  ck_assert_int_eq(h->low_score, 10);
+
   
-  
-  
+  /* busted?*/
+  reset_hand(h);
+  add_card_to_hand(h, 43);
+  add_card_to_hand(h, 44);
+  add_card_to_hand(h, 45);
+  score_hand(h);
+  print_hand(h);
+
+  ck_assert_int_eq(h->score, h->low_score);
+  ck_assert_int_eq(h->score, 30);
   
   free_hand(h);
 } 
