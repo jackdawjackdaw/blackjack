@@ -1,6 +1,7 @@
 
 #include "hand.h"
 #include "cards.h"
+#include "useful.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,7 +19,7 @@
  * allocate a hand, the cards are all set to -1, marking not a card */
 hand* get_hand(void)
 {
-  hand* h = malloc_checked(sizeof(hand));
+  hand* h = (hand*)malloc_checked(sizeof(hand));
   reset_hand(h);
   return(h);
 }
@@ -39,7 +40,7 @@ void reset_hand(hand *h)
   h->score = 0;
   h->n_aces = 0;
   for(i = 0; i < MAXCARDSHAND; i++){
-    h->cards[i] = -1; /* not a card, however zero is a card */
+    h->cards[i] = -2; /* not a card, however zero is a card */
   }
 }
 
@@ -49,12 +50,17 @@ void print_hand(hand* h)
 {
   int i;
   char buffer[4];
-  printf("# hand: (");
-  for(i = 0; i < h->n_cards; i++){
-    card_to_str_short(h->cards[i], buffer);
-    printf("%s ", buffer);
+
+  if(h->n_cards == 0){
+    printf("# empty hand\n");
+  } else {
+    printf("# hand: (");
+    for(i = 0; i < h->n_cards; i++){
+      card_to_str_short(h->cards[i], buffer);
+      printf("%s ", buffer);
+    }
+    printf(") score: %d\n", h->score);
   }
-  printf(") score: %d\n", h->score);
 }
 
 /** 
@@ -73,55 +79,70 @@ int score_hand(hand *h)
   int n_slots = (n_aces == 0) ? 1 : (2 <<(n_aces-1));
   int i;
 
+  printf("n_slots %d\n", n_slots);
+  
+  if(h->n_cards == 0){
+    return(0);
+  }
+  
   score_list = malloc_checked(sizeof(int)*n_slots);
 
   for(i = 0; i < n_slots; i++){
     score_list[i] = 0;
   }
   
-  score_helper(h, score_list, 0);
+  score_helper(h, n_slots, score_list);
 
   /* want to either pick the highest non bust score,
    * or the lowest low score */
+
+  if(n_slots == 1)
+    h->score = score_list[0];
+  else {
+    for(i = 0; i < n_slots; i++)
+      printf("%d ", score_list[i]);
+    printf("\n");
+  }
+
   
   free(score_list);
   return(h->score);
 }
 
-/**
- * iterate through the hand list, if the card is a regular card just increment 
- * the score, otherwise branch and fill out a new list element when we come to an ace */
-void score_helper(hand *h, int *score_list_ptr, int hand_index)
+/* computes the list of scores,
+ * 
+ * first makes a list of the values of the current hand,
+ * then iterates through this list n_slots times, on each pass 
+ * the score is computed with negative values (aces) being treated as high
+ * on each pass the value of the first negative ace (high) is flipped from high to low i.e from -1 to 1.
+ */
+void score_helper(hand* h, int n_slots, int *score_list)
 {
-  int card = h->cards[hand_index];
-  int val = get_value(card);
-  int temp_score;
-  int temp_index;
-  if(val > 0){
-    *score_list_ptr += val;
-    if(hand_index < h->n_cards){
-      score_helper(h, score_list_ptr, hand_index++);
-    }
-  } else { /* it's an ace */
-    temp_score = *score_list_ptr; /* save the old score */
-    temp_index = hand_index; /* save the old index */
+  int i,j;
+  int flip_flag ;
+  int *val_list = malloc_checked(sizeof(int)*h->n_cards);
+  int temp_score ;
+  for(i = 0; i < h->n_cards; i++)
+    val_list[i] = get_value(h->cards[i]);
 
-    *score_list_ptr += 1; /* ace low */
-    if(hand_index < h->n_cards){
-      /* running this branch will modify hand index*/
-      score_helper(h, score_list_ptr, hand_index++);
+  for(i = 0; i < n_slots; i++){
+    temp_score = 0;
+    flip_flag = 0;
+    for(j = 0; j < h->n_cards; j++){
+      if(val_list[j] > 0){ 
+        temp_score += val_list[j];
+      } else {
+        temp_score += 11; /* treat the -1 as an ace */
+        if(flip_flag == 0){
+          val_list[j] *= -1; /* change the sign */
+          flip_flag = 1;
+        } 
+      }
     }
-    
-    score_list_ptr++; /* next slot in the list */
-    *score_list_ptr += 11 + temp_score; /* add the old score and the high value */
-    if(temp_index < h->n_cards){
-      score_helper(h, score_list_ptr, temp_index++);
-    }
-
+    score_list[i] = temp_score;
   }
 }
-  
-
+        
 
 /**
  * try and add the given card to the hand,
@@ -140,7 +161,8 @@ int add_card_to_hand(hand* h, int card)
       h->n_aces++;
 
     /* update the score */
-    score_hand(h);
+    /* disabled until this is debugged */
+    //score_hand(h);
     return(card); 
   } else {
     /* cant add a card to the hand */
