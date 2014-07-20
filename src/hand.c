@@ -38,6 +38,7 @@ void reset_hand(hand *h)
   int i;
   h->n_cards = 0;
   h->score = 0;
+  h->low_score = 0;
   h->n_aces = 0;
   for(i = 0; i < MAXCARDSHAND; i++){
     h->cards[i] = -2; /* not a card, however zero is a card */
@@ -54,12 +55,12 @@ void print_hand(hand* h)
   if(h->n_cards == 0){
     printf("# empty hand\n");
   } else {
-    printf("# hand: (");
+    printf("# hand: ( ");
     for(i = 0; i < h->n_cards; i++){
       card_to_str_short(h->cards[i], buffer);
       printf("%s ", buffer);
     }
-    printf(") score: %d\n", h->score);
+    printf(") score-hi: %d score-lo: %d\n", h->score, h->low_score);
   }
 }
 
@@ -70,7 +71,10 @@ void print_hand(hand* h)
  * we can get the value of the cards in the hand from cards.c:get_value(card)
  * however if there is an ace then we should recurse and account for both values
  * 
- * for a hand containing n_aces the maximum number of different scores is 2^(n_aces) 
+ * for a hand containing n_aces the maximum number of different high-low choices is bounded from above by
+ * 2^(n_aces)
+ *
+ * we could set a high and low score?
  */
 int score_hand(hand *h)
 {
@@ -96,14 +100,27 @@ int score_hand(hand *h)
   /* want to either pick the highest non bust score,
    * or the lowest low score */
 
-  if(n_slots == 1)
+  if(n_slots == 1){
     h->score = score_list[0];
-  else {
-    for(i = 0; i < n_slots; i++)
+    h->low_score = h->score;
+  } else {
+    for(i = 0; i < n_slots; i++){
       printf("%d ", score_list[i]);
+      /* sets score to the highest non bust value  */
+      if(score_list[i] > h->score && score_list[i] <= 21)
+        h->score = score_list[i];
+    }
     printf("\n");
-  }
 
+    /* this one is always the lowest */
+    h->low_score = score_list[n_slots-1];
+    /* for(i = 0; i < n_slots; i++){ */
+    /*   if(score_list[i] < h->low_score){ */
+    /*     h->low_score = score_list[i]; */
+    /*   } */
+    /* } */
+
+  }
   
   free(score_list);
   return(h->score);
@@ -112,8 +129,9 @@ int score_hand(hand *h)
 /* computes the list of scores,
  * 
  * first makes a list of the values of the current hand,
- * then iterates through this list n_slots times, on each pass 
- * the score is computed with negative values (aces) being treated as high
+ * then iterates through this list n_slots times,
+ * on each pass 
+ * the score is computed with negative values (aces) being treated as high (i.e -1)
  * on each pass the value of the first negative ace (high) is flipped from high to low i.e from -1 to 1.
  */
 void score_helper(hand* h, int n_slots, int *score_list)
@@ -141,6 +159,8 @@ void score_helper(hand* h, int n_slots, int *score_list)
     }
     score_list[i] = temp_score;
   }
+  
+  free(val_list);
 }
         
 

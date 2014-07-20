@@ -81,15 +81,15 @@ START_TEST (test_hand_score)
   reset_hand(h);
   add_card_to_hand(h, test_card);
   add_card_to_hand(h,1);
-  print_hand(h);
   score_hand(h);
+  print_hand(h);
 
   reset_hand(h);
   add_card_to_hand(h, test_card);
   add_card_to_hand(h,1);
   add_card_to_hand(h, test_card-8);
-  print_hand(h);
   score_hand(h);
+  print_hand(h);
 
   /* two aces */
   /* score list should be: 1+1, 1+11, 11+11 */
@@ -97,9 +97,19 @@ START_TEST (test_hand_score)
   reset_hand(h);
   add_card_to_hand(h,1);
   add_card_to_hand(h,2);
-  print_hand(h);
+  add_card_to_hand(h,12);  
   score_hand(h);
+  print_hand(h);
 
+  reset_hand(h);
+  add_card_to_hand(h,1);
+  add_card_to_hand(h,11);    
+  add_card_to_hand(h,2);
+  add_card_to_hand(h,12);  
+  score_hand(h);
+  print_hand(h);
+
+  
   
   
   

@@ -17,7 +17,8 @@ typedef struct hand{
    * This could be replaced with a linked list, to support more generic games
    */
   int cards[MAXCARDSHAND];
-  int score; /* how much the current hand is worth */
+  int score; /* how much the current hand is worth, highest non bust value */
+  int low_score; /* the lowest current score */
 }hand;
 
 hand* get_hand(void);
