@@ -35,7 +35,7 @@ void print_hand(hand* h);
 void hand_to_string(hand *h, char* string);
   
 int add_card_to_hand(hand* h, int card);
-
+int hand_is_blackjack(hand *h);
 
 
 #endif

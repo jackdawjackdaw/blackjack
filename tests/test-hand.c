@@ -48,13 +48,42 @@ START_TEST (test_hand_to_string)
   add_card_to_hand(h, 23);
   add_card_to_hand(h, 27);
 
+  score_hand(h);
+  
   strcpy(buffer, "# player ");
   hand_to_string(h, buffer);
 
   printf("[%s]\n", buffer);
-  
+  free_hand(h);
 }
 END_TEST
+
+START_TEST (test_hand_blackjack)
+{
+  hand *h = get_hand();
+
+  /* this is not blackjack */
+  add_card_to_hand(h, 40);
+  add_card_to_hand(h, 20);
+
+  score_hand(h);
+  print_hand(h);
+  ck_assert(hand_is_blackjack(h) != 0);
+
+  /* three cards with 21 is not blackjack*/
+  //add_card_to_hand(
+  
+  /* this should be blackjack */
+  reset_hand(h);
+  add_card_to_hand(h, 1);
+  add_card_to_hand(h, 50);
+  score_hand(h);
+  print_hand(h);
+  ck_assert(hand_is_blackjack(h) == 0);
+  
+  free_hand(h);
+} 
+END_TEST     
 
 /**
  * test the scoring functions */
@@ -173,6 +202,7 @@ Suite* hand_suite (void) {
   tcase_add_test(tcase, test_hand_basic);
   tcase_add_test(tcase, test_hand_to_string);
   tcase_add_test(tcase, test_hand_score);
+  tcase_add_test(tcase, test_hand_blackjack);
         
   suite_add_tcase(suite, tcase);
   return suite;

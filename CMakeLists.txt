@@ -23,3 +23,6 @@ if(BUILD_TESTING)
 enable_testing()
 add_subdirectory(tests)
 endif(BUILD_TESTING)
+
+## for packaging (http://www.cmake.org/Wiki/CMake/CPackExample)
+## include(cpack)

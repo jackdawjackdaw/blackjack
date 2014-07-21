@@ -75,7 +75,7 @@ void hand_to_string(hand *h, char* string)
   if(h->n_cards == 0){
     sprintf(string, "# empty hand\n");
   } else {
-    strcat(string, "hand: ( ");
+    strcat(string, "( ");
     //printf("# hand: ( ");
     for(i = 0; i < h->n_cards; i++){
       card_to_str_short(h->cards[i], buffer);
@@ -84,10 +84,30 @@ void hand_to_string(hand *h, char* string)
       strcat(string, big_buff);
     }
     //printf(") score-hi: %d score-lo: %d\n", h->score, h->low_score);
-    sprintf(big_buff, ") score-hi: %d score-lo: %d", h->score, h->low_score);
+    //sprintf(big_buff, ") score-hi: %d score-lo: %d\n", h->score, h->low_score);
+    if(h->n_aces == 0){
+      sprintf(big_buff, ") score: %d\n", h->score);
+    } else {
+      sprintf(big_buff, ") score: (%d %d)\n", h->score, h->low_score);
+    }
+    
     strcat(string, big_buff);
   }
 }
+
+/** returns zero if it is otherwise non-zero 
+ * a hand with 1 ace and 2 cards with score 21 MUST be blackjack
+ * in fact a hand with 2 cards and score 21 must be blackjack */
+int hand_is_blackjack(hand *h)
+{
+  if(h->n_cards != 2){
+    return -1;
+  } else {
+    if(h->score == 21 && h->n_aces == 1)
+      return 0;
+  }
+  return -1;
+}  
 
 
 /** 
@@ -143,6 +163,9 @@ int score_hand(hand *h)
     /* this one is always the lowest */
     h->low_score = score_list[n_slots-1];
   }
+
+  /* if(h->score > 21 && h->low_score <= 21) */
+  /*   h->score = h->low_score; */
   
   free(score_list);
   return(h->score);
@@ -202,9 +225,6 @@ int add_card_to_hand(hand* h, int card)
     if(get_type(card) == 0) /* it's an ace */
       h->n_aces++;
 
-    /* update the score */
-    /* disabled until this is debugged */
-    //score_hand(h);
     return(card); 
   } else {
     /* cant add a card to the hand */
