@@ -29,8 +29,11 @@ void reset_hand(hand* h);
 int score_hand(hand* h); 
 void score_helper(hand* h, int n_slots, int *score_list);
 
-void print_hand(hand* h);
+//void print_hand(hand* h);
 
+void print_hand(hand* h);
+void hand_to_string(hand *h, char* string);
+  
 int add_card_to_hand(hand* h, int card);
 
 

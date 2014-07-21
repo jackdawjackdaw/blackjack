@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /** 
  * A hand is a set of cards held by a player (dealer, human players etc are not distinguished).
@@ -63,6 +64,31 @@ void print_hand(hand* h)
     printf(") score-hi: %d score-lo: %d\n", h->score, h->low_score);
   }
 }
+
+void hand_to_string(hand *h, char* string)
+{
+  int i;
+  char buffer[4];
+
+  char big_buff[256];
+
+  if(h->n_cards == 0){
+    sprintf(string, "# empty hand\n");
+  } else {
+    strcat(string, "hand: ( ");
+    //printf("# hand: ( ");
+    for(i = 0; i < h->n_cards; i++){
+      card_to_str_short(h->cards[i], buffer);
+      //printf("%s ", buffer);
+      sprintf(big_buff, "%s ", buffer);
+      strcat(string, big_buff);
+    }
+    //printf(") score-hi: %d score-lo: %d\n", h->score, h->low_score);
+    sprintf(big_buff, ") score-hi: %d score-lo: %d", h->score, h->low_score);
+    strcat(string, big_buff);
+  }
+}
+
 
 /** 
  * scores the cards in a hand,

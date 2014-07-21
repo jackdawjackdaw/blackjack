@@ -40,6 +40,22 @@ START_TEST (test_hand_basic)
 } 
 END_TEST  
 
+START_TEST (test_hand_to_string)
+{
+  hand *h = get_hand();
+  char buffer[256];
+  add_card_to_hand(h, 33);
+  add_card_to_hand(h, 23);
+  add_card_to_hand(h, 27);
+
+  strcpy(buffer, "# player ");
+  hand_to_string(h, buffer);
+
+  printf("[%s]\n", buffer);
+  
+}
+END_TEST
+
 /**
  * test the scoring functions */
 
@@ -155,6 +171,7 @@ Suite* hand_suite (void) {
 
   /* add tests here */
   tcase_add_test(tcase, test_hand_basic);
+  tcase_add_test(tcase, test_hand_to_string);
   tcase_add_test(tcase, test_hand_score);
         
   suite_add_tcase(suite, tcase);
