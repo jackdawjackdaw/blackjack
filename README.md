@@ -7,9 +7,11 @@ A simple implementation of BlackJack game, aims to help you learn to count cards
 units and can keep on playing until you reach your inevitable gamblers ruin, or ctrl-c. 
 
 The card count is updated each time a card is drawn, with the following rules:
+
     1 point 2-6
     0 points 7-9
    -1 points 10-A
+   
 the count is reset each time the deck is shuffled.
 
 Cards are represented by their value and suit, tens are printed as T not 10.
