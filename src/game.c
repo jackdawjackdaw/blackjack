@@ -110,20 +110,20 @@ int play_round(deck *d, int* player_pot)
   output_message(buffer);
 
   /* should check both hands for blackjack */
-  if( (hand_is_blackjack(player) == 0)
-      && (hand_is_blackjack(dealer) != 0)){
+  if( hand_is_blackjack(player)
+      && !hand_is_blackjack(dealer)){
     player_wins_blackjack( player_pot, player_bet);
     retval = 1;
     goto END;
-  } else if( (hand_is_blackjack(dealer) == 0) &&
-             (hand_is_blackjack(player) != 0)){
+  } else if( hand_is_blackjack(dealer) &&
+             !hand_is_blackjack(player)){
     strcpy(buffer, "[dealer] BLACKJACK!\n");
     output_message(buffer);
     player_lose_simple(player_pot, player_bet);
     retval = -1;
     goto END;
-  } else if( (hand_is_blackjack(dealer)== 0)
-             && (hand_is_blackjack(player) == 0)){
+  } else if( (hand_is_blackjack(dealer))
+             && (hand_is_blackjack(player) )){
     hand_push(player_pot);
     retval = 0;
     goto END;    

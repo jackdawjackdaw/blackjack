@@ -68,7 +68,7 @@ START_TEST (test_hand_blackjack)
 
   score_hand(h);
   print_hand(h);
-  ck_assert(hand_is_blackjack(h) != 0);
+  ck_assert(!hand_is_blackjack(h) );
 
   /* three cards with 21 is not blackjack*/
   //add_card_to_hand(
@@ -79,7 +79,7 @@ START_TEST (test_hand_blackjack)
   add_card_to_hand(h, 50);
   score_hand(h);
   print_hand(h);
-  ck_assert(hand_is_blackjack(h) == 0);
+  ck_assert(hand_is_blackjack(h));
   
   free_hand(h);
 } 

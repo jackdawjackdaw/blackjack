@@ -95,18 +95,18 @@ void hand_to_string(hand *h, char* string)
   }
 }
 
-/** returns zero if it is otherwise non-zero 
+/** returns zero false, else non-zero
  * a hand with 1 ace and 2 cards with score 21 MUST be blackjack
  * in fact a hand with 2 cards and score 21 must be blackjack */
 int hand_is_blackjack(hand *h)
 {
   if(h->n_cards != 2){
-    return -1;
+    return 0;
   } else {
     if(h->score == 21 && h->n_aces == 1)
-      return 0;
+      return 1;
   }
-  return -1;
+  return 0;
 }  
 
 
