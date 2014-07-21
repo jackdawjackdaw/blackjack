@@ -83,7 +83,7 @@ enum player_actions get_player_action()
     fgets(input, sizeof(input), stdin);
 
     sscanf(input, "%s", instr);
-    printf("# instr %s\n", instr);
+//printf("# instr %s\n", instr);
     
     switch(instr[0]){
     case '\n':

@@ -29,15 +29,6 @@ deck *d;
 int global_card_count;
 
 
-/* A typical card counting system assigns a point score to each rank of card (e.g., 1 point for 2–6, 0 points
-   for 7–9 and −1 point for 10–A). Whenever a card is exposed, a counter adds the score of that card to a
-   running total, the 'count'; the count is used to make betting and playing decisions according to a table
-   which they have learned. The count starts at 0 for a freshly shuffled deck for "balanced" counting
-   systems. Unbalanced counts are often started at a value which depends on the number of decks used in the
-   game.
-*/
-
-
 int main (int argc, char* argv[]){
 
   int n_packs = 1; /* this should be an argument */
@@ -61,7 +52,7 @@ int main (int argc, char* argv[]){
   srandom(get_seed_noblock()); /* set the seed using the non blocking interface*/
   shuffle_deck(d);
 
-    while(1){
+  while(1){
     win_score += play_round(d, &player_pot);
     printf("pot: %d nwins: %d count: %d\n", player_pot, win_score, global_card_count);
     if(player_pot < 0){

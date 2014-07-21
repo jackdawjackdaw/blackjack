@@ -43,6 +43,10 @@ Check backed unit tests can also be built by enabling the `BUILD_TESTING` cmake 
 
 The tests can be run from the `make test` target or by directly invoking `ctest` .
 
+## Playing the game
+
+The first argument sets the number of packs in the deck (between 1 and 8).
+
 
 [1]: http://www.cmake.org/
 [2]: http://check.sourceforge.net/
