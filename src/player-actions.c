@@ -16,8 +16,9 @@
 
 /**
  * tries to read player input (forever) until
+ * you finally get something valid
  * defaults to 1.
- * you finally get something valid */
+ */
 int get_player_bet(int player_pot)
 {
   char input[256];
