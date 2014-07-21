@@ -1,7 +1,11 @@
 #include <stdio.h>
+#include <limits.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include <signal.h>
+
+
 
 #include "useful.h"
 #include "cards.h"
@@ -18,26 +22,56 @@
  * very basic blackjack game implementation 
  */
 
+void  INThandler(int sig);
+
+deck *d;
+
 int main (int argc, char* argv[]){
 
   int n_packs = 1; /* this should be an argument */
+  int temp = 0;
+  int count = 0;
   int player_pot = 100; /* how many bits the player starts with */
   int win_score = 0;
+
+  signal(SIGINT, INThandler);
   
-  deck * d = get_deck(n_packs);
+  if(argc > 1){
+    temp = strtol(argv[1], NULL, 10);
+    if(temp > 0 && temp <= 8){
+      n_packs = temp;
+      printf("# playing with %d packs of cards in the deck\n", n_packs);
+    }
+  }
+      
+  d = get_deck(n_packs);
   /* set the seed here */
   srandom(get_seed_noblock()); /* set the seed using the non blocking interface*/
-  //srandom(1);
   shuffle_deck(d);
   
-  win_score += play_round(d, &player_pot);
-  printf("# final pot %d\tnwins %d\n", player_pot, win_score);
-  
+  while(1){
+    win_score += play_round(d, &player_pot);
+    printf("pot %d\tnwins %d\tcount %d\n", player_pot, win_score, count);
+  }
   free_deck(d);
   
   return(EXIT_SUCCESS);
 }
 
+/* try and catch ctrl-c and free remaining junk */
+void  INThandler(int sig)
+{
+     char  c;
+     signal(sig, SIG_IGN);
+     printf("\nDo you really want to quit? [y/n] ");
+     c = getchar();
+     if (c == 'y' || c == 'Y'){
+       free_deck(d);
+       exit(0);
+     } else
+       signal(SIGINT, INThandler);
+     getchar(); // Get new line character
+}
 
   
 
