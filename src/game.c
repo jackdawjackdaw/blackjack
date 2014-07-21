@@ -37,22 +37,34 @@ int main (int argc, char* argv[]){
   return(EXIT_SUCCESS);
 }
 
-/* stub */
+/**
+ * tries to read player input (forever) until
+ * defaults to 1.
+ * you finally get something valid */
 int get_player_bet(int player_pot)
 {
   char input[256];
   char buffer[256];
   char err_buffer[256];
+  int betval_default = 1;
   int betval = 1;
   int bet_input = 0;
   int valid_flag = 0;
 
 
-  sprintf(buffer, "[player] (pot %d) bet amount? ", player_pot);
+  sprintf(buffer, "[player] (pot %d) bet amount? (%d) ", player_pot, betval_default);
   
   do{
     output_message(buffer);    
     fgets(input, sizeof(input), stdin);
+    
+    if(input[0] == '\n'){
+      /* have to have an explicit default incase you get say multiple bad inputs and then 
+       * a default choice*/
+      betval = betval_default;
+      break;
+    }
+    
     //printf("# input read [%s]\n", input);
     if(sscanf(input, "%d", &bet_input) > 0){
       betval = bet_input;
