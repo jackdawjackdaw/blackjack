@@ -155,7 +155,7 @@ int score_hand(hand *h)
       //printf("%d ", score_list[i]);
       /* sets score to the highest non bust value  */
       if(score_list[i] > h->score && score_list[i] <= 21)
-        h->score = score_list[i];
+       h->score = score_list[i];
       /* what if theres isnt' a non bust value? */
     }
     //printf("\n");
@@ -166,6 +166,9 @@ int score_hand(hand *h)
 
   /* if(h->score > 21 && h->low_score <= 21) */
   /*   h->score = h->low_score; */
+
+  if(h->score == 0 && h->low_score > 0)
+    h->score = h->low_score;
   
   free(score_list);
   return(h->score);

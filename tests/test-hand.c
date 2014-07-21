@@ -164,8 +164,6 @@ START_TEST (test_hand_score)
   ck_assert_int_eq(h->low_score, 6);
 
   
-
-  
   reset_hand(h);
   add_card_to_hand(h,1);
   add_card_to_hand(h,11);    
@@ -178,8 +176,21 @@ START_TEST (test_hand_score)
   ck_assert_int_eq(h->score, 20);
   ck_assert_int_eq(h->low_score, 10);
 
+  printf("# special weird case \n");
+  reset_hand(h);
+  add_card_to_hand(h,40);
+  add_card_to_hand(h,2);    
+  add_card_to_hand(h,1);
+  add_card_to_hand(h,45);
+  score_hand(h);
+  print_hand(h);
+
+  //ck_assert_int_eq(h->score, 20);
+  //ck_assert_int_eq(h->low_score, 10);
+  
   
   /* busted?*/
+  printf("# bust case \n");
   reset_hand(h);
   add_card_to_hand(h, 43);
   add_card_to_hand(h, 44);
