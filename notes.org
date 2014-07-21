@@ -1,6 +1,5 @@
-* blackjack for insight
+* blackjack 
 ** challenge statement
-   Insight Data Engineering Fellows Program - Coding Challenge
 
    We'd like you to implement a text-based Blackjack program in one of the following programming languages:
    Java, Clojure, Scala, C, C++, Python, or Ruby. There should be one player and one dealer. The dealer should
