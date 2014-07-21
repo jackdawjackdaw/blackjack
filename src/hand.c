@@ -69,11 +69,12 @@ void print_hand(hand* h)
  * updates h->score and also returns the score
  * 
  * we can get the value of the cards in the hand from cards.c:get_value(card)
- * however if there is an ace then we should recurse and account for both values
+ * however if there is an ace then we need to account for both potential values
  * 
  * for a hand containing n_aces the maximum number of different high-low choices is bounded from above by
  * 2^(n_aces)
- * could do better, there's many equivalent configs that we're wasting time by examining 
+ * could do better, there's many equivalent configs that we're wasting time by examining
+ * 
  *
  * we could set a high and low score?
  */
