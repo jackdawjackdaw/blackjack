@@ -59,6 +59,20 @@ int get_value( int card)
   
 }  
 
+/*  1 point for 2–6, 0 points for 7–9 and −1 point for 10–A). */
+int get_card_count_value(int card)
+{
+  int type = get_type(card);
+  if(type == 0 || type > 10 ){ /* faces and aces */
+    return -1;
+  }
+  if(type < 5){ /* 2-6 */
+    return 1;
+  } 
+  
+  return 0;
+}
+
 char suit_to_char(int suit)
 {
   assert(suit >= 0 && suit < 4);

@@ -61,6 +61,8 @@ int get_player_bet(int player_pot)
 }
 
 
+extern int global_card_count;
+
 /**
  * poll player until you get a valid input, either
  * nothing -> defaults to stick
@@ -72,10 +74,12 @@ enum player_actions get_player_action()
 {
   char input[256];
   char instr[256];
-  //int valid_flag = 0;
+  char buffer[256];  
 
   while(1){
-    output_message("[player] (h)it, (s)tick, (d)ouble? ");
+    sprintf(buffer, "[player] (h)it, (s)tick, (d)ouble? (count: %d) ", global_card_count);
+//output_message("[player] (h)it, (s)tick, (d)ouble? ");
+    output_message(buffer);
     fgets(input, sizeof(input), stdin);
 
     sscanf(input, "%s", instr);

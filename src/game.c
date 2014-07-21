@@ -24,15 +24,27 @@
 
 void  INThandler(int sig);
 
+/* ooh globals */
 deck *d;
+int global_card_count;
+
+
+/* A typical card counting system assigns a point score to each rank of card (e.g., 1 point for 2–6, 0 points
+   for 7–9 and −1 point for 10–A). Whenever a card is exposed, a counter adds the score of that card to a
+   running total, the 'count'; the count is used to make betting and playing decisions according to a table
+   which they have learned. The count starts at 0 for a freshly shuffled deck for "balanced" counting
+   systems. Unbalanced counts are often started at a value which depends on the number of decks used in the
+   game.
+*/
+
 
 int main (int argc, char* argv[]){
 
   int n_packs = 1; /* this should be an argument */
   int temp = 0;
-  int count = 0;
   int player_pot = 100; /* how many bits the player starts with */
   int win_score = 0;
+  global_card_count = 0;
 
   signal(SIGINT, INThandler);
   
@@ -48,10 +60,10 @@ int main (int argc, char* argv[]){
   /* set the seed here */
   srandom(get_seed_noblock()); /* set the seed using the non blocking interface*/
   shuffle_deck(d);
-  
-  while(1){
+
+    while(1){
     win_score += play_round(d, &player_pot);
-    printf("pot %d\tnwins %d\tcount %d\n", player_pot, win_score, count);
+    printf("pot: %d nwins: %d count: %d\n", player_pot, win_score, global_card_count);
   }
   free_deck(d);
   
@@ -66,8 +78,9 @@ void  INThandler(int sig)
      printf("\nDo you really want to quit? [y/n] ");
      c = getchar();
      if (c == 'y' || c == 'Y'){
+       /* clear up allocated memory */
        free_deck(d);
-       exit(0);
+       exit(EXIT_SUCCESS);
      } else
        signal(SIGINT, INThandler);
      getchar(); // Get new line character
@@ -260,6 +273,7 @@ void draw_cards_to_hand(int n_cards, deck *d, hand* h)
       printf("# deck is empty reshuffling & resetting \n");
       reset_deck(d);
       /* reset counting and stats here */
+      global_card_count = 0;
     } else {
       /* push the card into the hand */
       if(add_card_to_hand(h, temp_card) < 0 ){
@@ -267,6 +281,8 @@ void draw_cards_to_hand(int n_cards, deck *d, hand* h)
         fprintf(stderr, "# err, too many cards (%d) in hand\n", h->n_cards);
         exit(EXIT_FAILURE);
       }
+      /* ok now we can increment the global card counting score */
+      global_card_count += get_card_count_value(temp_card);
       count++;
     }
   }
