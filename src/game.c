@@ -7,6 +7,7 @@
 #include "cards.h"
 #include "deck.h"
 #include "hand.h"
+#include "player-actions.h"
 
 #include "game.h"
 
@@ -37,57 +38,8 @@ int main (int argc, char* argv[]){
   return(EXIT_SUCCESS);
 }
 
-/**
- * tries to read player input (forever) until
- * defaults to 1.
- * you finally get something valid */
-int get_player_bet(int player_pot)
-{
-  char input[256];
-  char buffer[256];
-  char err_buffer[256];
-  int betval_default = 1;
-  int betval = 1;
-  int bet_input = 0;
-  int valid_flag = 0;
 
-
-  sprintf(buffer, "[player] (pot %d) bet amount? (%d) ", player_pot, betval_default);
   
-  do{
-    output_message(buffer);    
-    fgets(input, sizeof(input), stdin);
-    
-    if(input[0] == '\n'){
-      /* have to have an explicit default incase you get say multiple bad inputs and then 
-       * a default choice*/
-      betval = betval_default;
-      break;
-    }
-    
-    //printf("# input read [%s]\n", input);
-    if(sscanf(input, "%d", &bet_input) > 0){
-      betval = bet_input;
-      if(betval > 0 && betval <= player_pot){
-        valid_flag = 1; 
-      } else {
-        sprintf(err_buffer, "enter a number in range [1,%d]", player_pot);
-        output_error(err_buffer);
-      }
-    } else {
-      sprintf(err_buffer, "enter a number in range [1,%d]", player_pot);
-      output_error(err_buffer);
-    }
-  } while (valid_flag == 0);
-  
-  return betval;
-}
-
-
-void do_player_actions(deck *d, hand* h, int* player_bet){
-  /* do nothing */
-}
-
 
 /**
  *  play a round/hand of blackjack
@@ -141,7 +93,6 @@ int play_round(deck *d, int* player_pot)
     goto END;    
   }
 
-  output_message("[player] what will you do?\n");
   
   /* suppose we loop through the player actions here */
   /* this can change their bet and of course their hand */
@@ -288,7 +239,7 @@ void draw_cards_to_hand(int n_cards, deck *d, hand* h)
   score_hand(h);
 }
 
-/* stub */
+/* stubs, could be replaced with nicer io */
 void output_message(char *msg)
 {
   printf("%s", msg);
