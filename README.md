@@ -10,7 +10,7 @@ The card count is updated each time a card is drawn, with the following rules:
 
     1 point 2-6
     0 points 7-9
-   -1 points 10-A
+    -1 points 10-A
    
 the count is reset each time the deck is shuffled.
 
