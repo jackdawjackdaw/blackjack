@@ -64,6 +64,10 @@ int main (int argc, char* argv[]){
     while(1){
     win_score += play_round(d, &player_pot);
     printf("pot: %d nwins: %d count: %d\n", player_pot, win_score, global_card_count);
+    if(player_pot < 0){
+      printf("game over: you've gone broke!\n");
+      break;
+    }
   }
   free_deck(d);
   

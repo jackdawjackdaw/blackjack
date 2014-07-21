@@ -1,16 +1,24 @@
-BlackJack
+Simple-Jack
 =========
 
 C.Coleman-Smith (chris.colemansmith@gmail.com)
 
-A simple implementation of a popular card game, aims to help you learn to count cards. 
+A simple implementation of BlackJack game, aims to help you learn to count cards. You start with 100 currency
+units and can keep on playing until you reach your inevitable gamblers ruin, or ctrl-c. 
+
+The card count is updated each time a card is drawn, with the following rules:
+    1 point 2-6
+    0 points 7-9
+   -1 points 10-A
+the count is reset each time the deck is shuffled.
+
+Cards are represented by their value and suit, tens are printed as T not 10.
 
 ## Requires:
 
 * CMAKE [1]
 * A C compiler
-* GSL [2]
-* Check [3] - for unit tests
+* Check [2] - for unit tests
 
 ## Building, Installing and Testing
 
@@ -33,6 +41,7 @@ Check backed unit tests can also be built by enabling the `BUILD_TESTING` cmake 
 
 The tests can be run from the `make test` target or by directly invoking `ctest` .
 
+
 [1]: http://www.cmake.org/
-[2]: http://www.gnu.org/software/gsl/
-[3]: http://check.sourceforge.net/
+[2]: http://check.sourceforge.net/
+

@@ -4,6 +4,12 @@ include_directories(${CHECK_INCLUDE_DIR})
 
 ## add the lib we want to test in here
 set(libs ${libs} ${CHECK_LIBRARIES} blackjack)
+
+
+MESSAGE(STATUS "include dirs: ${INCLUDE_DIRECTORIES}")
+MESSAGE(STATUS "check include dirs: ${CHECK_INCLUDE_DIR}")
+MESSAGE(STATUS "libs: ${libs}")
+
 include_directories(. ../src)
 ## now build the test executable
 add_executable(test-cards test-cards)
