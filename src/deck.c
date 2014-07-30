@@ -109,7 +109,7 @@ int draw_card(deck *d)
 
 int n_cards_remaining(deck *d)
 {
-return (d ->n_cards - d->top_card);
+  return (d ->n_cards - d->top_card);
 }
 
 

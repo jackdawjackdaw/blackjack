@@ -65,6 +65,9 @@ void print_hand(hand* h)
   }
 }
 
+/**
+ * renders a hand to the supplied string 
+ */
 void hand_to_string(hand *h, char* string)
 {
   int i;
@@ -76,21 +79,16 @@ void hand_to_string(hand *h, char* string)
     sprintf(string, "# empty hand\n");
   } else {
     strcat(string, "( ");
-    //printf("# hand: ( ");
     for(i = 0; i < h->n_cards; i++){
       card_to_str_short(h->cards[i], buffer);
-      //printf("%s ", buffer);
       sprintf(big_buff, "%s ", buffer);
       strcat(string, big_buff);
     }
-    //printf(") score-hi: %d score-lo: %d\n", h->score, h->low_score);
-    //sprintf(big_buff, ") score-hi: %d score-lo: %d\n", h->score, h->low_score);
     if(h->n_aces == 0){
       sprintf(big_buff, ") score: %d\n", h->score);
     } else {
       sprintf(big_buff, ") score: (%d %d)\n", h->score, h->low_score);
     }
-    
     strcat(string, big_buff);
   }
 }

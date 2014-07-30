@@ -47,6 +47,18 @@ The tests can be run from the `make test` target or by directly invoking `ctest`
 
 The first argument sets the number of packs in the deck (between 1 and 8).
 
+## ToDo
+
+* Change all the sprintf/strcat/... calls to something safer
+    "The strcat() function is easily misused in a manner which enables malicious users to arbitrarily change
+     a running program's functionality through a buffer overflow attack.  (See the FSA.)"
+* some better checking for `hand.c:score_hand()`, something like quickcheck would be ideal.
+* `game.c:play_round()` is way too long for a single function
+* compute the probability of going bust given the current hand and the state of the deck
+* Implement some actual tests for the game mode
+* Add tests for player-actions
+* Add a curses interface to make things pretty
+* Support for other locales 
 
 [1]: http://www.cmake.org/
 [2]: http://check.sourceforge.net/

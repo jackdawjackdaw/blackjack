@@ -37,6 +37,7 @@ int main (int argc, char* argv[]){
   int win_score = 0;
   global_card_count = 0;
 
+  /* deal with ctrl-c, probably not portable */
   signal(SIGINT, INThandler);
   
   if(argc > 1){
@@ -70,6 +71,7 @@ void  INThandler(int sig)
 {
      char  c;
      signal(sig, SIG_IGN);
+     /* should probably not use printf here, use write or fwrite instead */
      printf("\nDo you really want to quit? [y/n] ");
      c = getchar();
      if (c == 'y' || c == 'Y'){
